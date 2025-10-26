@@ -63,13 +63,13 @@ app.use((req, res, next) => {
   }
 
   // If running locally, start listening
-  if (process.env.VERCEL !== "1") {
-    const port = parseInt(process.env.PORT || "5000", 10);
-    server.listen(port, "0.0.0.0", () => {
-      log(`serving locally on port ${port}`);
-    });
-  }
-})();
+const port = parseInt(process.env.PORT || "5000", 10);
+if (!process.env.VERCEL) {
+  server.listen(port, "0.0.0.0", () => {
+    log(`Serving locally on port ${port}`);
+  });
+}
 
-export default app;
+export default server;
+
 
