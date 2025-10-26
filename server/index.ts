@@ -46,6 +46,8 @@ app.use((req, res, next) => {
 });
 
 // Register routes before exporting
+// --- Keep all imports and middleware above as-is ---
+
 (async () => {
   const server = await registerRoutes(app);
 
@@ -62,14 +64,17 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // If running locally, start listening
-const port = parseInt(process.env.PORT || "5000", 10);
-if (!process.env.VERCEL) {
-  server.listen(port, "0.0.0.0", () => {
-    log(`Serving locally on port ${port}`);
-  });
-}
+  // Local development only
+  if (!process.env.VERCEL) {
+    const port = parseInt(process.env.PORT || "5000", 10);
+    server.listen(port, "0.0.0.0", () => {
+      log(`Serving locally on port ${port}`);
+    });
+  }
+})();
 
-export default server;
+// ✅ Export Express instance for Vercel
+export default app;
+
 
 
